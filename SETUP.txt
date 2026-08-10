@@ -1,0 +1,61 @@
+═══════════════════════════════════════════════════════════
+  L'air Chic — Guia de configuração (grátis)
+═══════════════════════════════════════════════════════════
+
+1. GOOGLE SHEETS (catálogo de perfumes)
+────────────────────────────────────────
+   a) Acesse sheets.google.com e crie uma planilha nova
+   b) Importe o arquivo data/produtos-exemplo.csv
+      (Arquivo → Importar → Upload)
+   c) Compartilhe: "Qualquer pessoa com o link" → Leitor
+   d) Copie o ID da URL:
+      https://docs.google.com/spreadsheets/d/COPIE_ESTE_ID/edit
+   e) Cole em js/config.js → SHEET_ID
+
+   Colunas da planilha:
+   id | nome | marca | genero | linha | familia | preco | estoque
+   descricao | imagem | destaque | novidade | ativo
+
+   Valores sim/nao para: destaque, novidade, ativo
+   Imagem: cole a URL pública da foto (Google Drive, Imgur, etc.)
+
+
+2. EMAILJS (e-mail de pedidos — grátis)
+────────────────────────────────────────
+   a) Crie conta em https://www.emailjs.com
+   b) Adicione serviço de e-mail (Gmail recomendado)
+   c) Crie um template com estas variáveis:
+      - {{customer_name}}
+      - {{order_items}}
+      - {{order_total}}
+      - {{observation}}
+   d) Destino: lairchicperfumes@gmail.com
+   e) Preencha em js/config.js:
+      PUBLIC_KEY, SERVICE_ID, TEMPLATE_ID
+
+
+3. GITHUB PAGES (hospedagem — grátis)
+────────────────────────────────────────
+   a) Crie repositório no GitHub (ex: LairChic)
+   b) Envie todos os arquivos do projeto
+   c) Settings → Pages → Source: main branch / root
+   d) Seu site ficará em:
+      https://SEU_USUARIO.github.io/LairChic/
+
+
+4. WHATSAPP
+────────────────────────────────────────
+   Já configurado: +55 21 96417-3559
+   (js/config.js → WHATSAPP)
+
+
+5. TESTAR LOCALMENTE
+────────────────────────────────────────
+   Abra um servidor local na pasta do projeto:
+   npx serve .
+   Acesse http://localhost:3000
+
+   Sem servidor, o navegador pode bloquear o carregamento
+   dos produtos locais (fetch).
+
+═══════════════════════════════════════════════════════════
