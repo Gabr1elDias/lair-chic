@@ -54,8 +54,141 @@
    Abra um servidor local na pasta do projeto:
    npx serve .
    Acesse http://localhost:3000
+   (ou http://localhost:3000/admin.html para o painel)
 
-   Sem servidor, o navegador pode bloquear o carregamento
-   dos produtos locais (fetch).
+   ⚠️ NÃO abra os arquivos com DUPLO CLIQUE (modo file://).
+   Nesse modo o navegador bloqueia o carregamento da planilha
+   (CORS), e o painel/loja mostram a mensagem de erro "Não
+   consegui carregar a planilha". Se vir essa mensagem, é isso:
+   use sempre o servidor local acima (ou a versão publicada
+   no GitHub Pages).
+
+
+6. PAINEL ADMIN (admin.html — esqueleto conectado)
+────────────────────────────────────────────────────────
+   O painel lê a MESMA planilha do site do cliente,
+   então os dois sempre mostram os mesmos perfumes.
+
+   ACESSO COM SENHA (proteção provisória):
+   - Ao abrir admin.html, aparece uma tela de login
+   - A senha fica em js/config.js → ADMIN_PASSWORD
+     (padrão inicial: lairchic2025 — troque!)
+   - Depois de logar, o navegador lembra durante a sessão
+   - Use o botão "Sair" no topo para encerrar a sessão
+   - ⚠️ IMPORTANTE: por ser um site estático (GitHub Pages),
+     quem inspecionar o código do navegador consegue ver a
+     senha. Essa é só uma trava de conveniência. A segurança
+     de verdade (login com servidor) será definida mais tarde
+     e aplicada em ambos os sites (loja e admin).
+
+   CONEXÃO DE ESCRITA (opcional — salvar direto na planilha):
+   a) O código do Google Apps Script está em admin/appsscript.js
+   b) Na planilha: Extensões → Apps Script → cole o código → Salvar
+   c) Implantar → Nova implantação → Aplicativo da web
+      - Executar como: Eu
+      - Quem tem acesso: Qualquer pessoa
+   d) Copie a URL e cole em js/config.js → ADMIN_API_URL
+   e) Pronto: as alterações no painel salvam direto na planilha
+
+   TESTANDO A CONEXÃO:
+   - Abra a URL da Web App (/exec) direto no navegador. Deve
+     aparecer: { "ok": true, "api": "lairchic" }
+   - Se der erro de permissão/404, a URL pode estar errada ou a
+     implantação antiga. Re-implante (passo c) e use a URL nova.
+   - IMPORTANTE: o site envia os dados com Content-Type
+     "text/plain" de propósito. NÃO mude para "application/json" —
+     isso faz o navegador fazer uma checagem CORS (preflight
+     OPTIONS) que o Google Apps Script NÃO responde, e a chamada
+     é bloqueada (erro no console do navegador).
+   - Se editar o código do Apps Script depois de implantar, é
+     preciso RE-IMPLANTAR (Implantar → Gerenciar implantações →
+     lápis ✏️ → "Nova versão" → Implantar), senão o site continua
+     usando a versão antiga do código.
+
+   ⚠️ IMPORTANTE — ESTOQUE AUTOMÁTICO:
+   Com o ADMIN_API_URL configurado, o site do cliente também
+   BAIXA O ESTOQUE sozinho na planilha quando um pedido é
+   confirmado (botão "Enviar pedido").
+   Exemplo: produto com 6 unidades → cliente compra 2 →
+   a planilha passa para 4 automaticamente.
+   Sem o ADMIN_API_URL, o pedido continua funcionando, mas o
+   estoque NÃO é atualizado sozinho (aparece um aviso no site).
+
+   ⚠️ AVISOS DE ESTOQUE ZERADO (vendas de itens esgotados):
+   Se um cliente comprar um perfume que está com estoque 0 (ou
+   pedir mais unidades do que o estoque disponível), o sistema
+   registra um AVISO automaticamente:
+   - Na planilha: é criada uma aba "Avisos" (na mesma planilha)
+     com a data/hora, o produto, a quantidade comprada e o
+     status (pendente / resolvido).
+   - No Painel Admin: aparece um bloco vermelho
+     "⚠️ Compras de produtos esgotados" listando os avisos
+     pendentes, com um botão "Resolver" para marcar como
+     atendido depois que você repor o estoque ou falar com
+     o cliente.
+   Para isso funcionar, o ADMIN_API_URL precisa estar
+   configurado e o appsscript.js deve ser a versão mais nova
+   (re-implante após colar o código atualizado).
+
+   💰 CONTROLE FINANCEIRO (Painel Admin → botão "Financeiro"):
+   Ao lado de "Baixar CSV" há o botão "💰 Financeiro" que abre
+   a tela de controle financeiro:
+   - Resumo: Total de vendas, Total de gastos e Líquido
+     (vendas − gastos) em 3 cartões no topo.
+   - Registrar venda: nome da pessoa que comprou + valor +
+     o que vendeu (opcional). Ex: Maria Silva — R$ 189,90.
+   - Registrar gasto: categoria (Perfume, Bolsa, Embalagem,
+     Frete, Divulgação, Outros) + descrição + valor.
+     Ex: Compra de bolsas no fornecedor — R$ 350,00.
+   - Lançamentos: tabela com todos os registros, filtros
+     (Todos / Vendas / Gastos) e botão "Excluir" por linha.
+   Os lançamentos ficam numa aba "Financeiro" na MESMA
+   planilha, criada automaticamente no final (não atrapalha
+   a primeira aba que o site da loja lê).
+   Exige ADMIN_API_URL configurado e o appsscript.js
+   atualizado (re-implante).
+
+
+    🛒 VENDA AUTOMÁTICA (do site da loja para o Financeiro):
+    Quando um cliente confirma o pedido no site (botão "Enviar
+    pedido"), além de baixar o estoque, o sistema registra a
+    venda automaticamente na aba "Financeiro":
+    - cliente = o nome que a pessoa digitou no site
+      (ex: Douglas comprou Dior Sauvage → a linha
+       Douglas | venda | 1x Dior Sauvage | R$ 189,90)
+    - descricao = quantidade x nome do produto
+    - valor = preço × quantidade do item
+    Assim você NÃO precisa lançar as vendas da loja uma a uma
+    manualmente — elas entram sozinhas. Só as vendas
+    presenciais/avulsas você registra pelo formulário do painel.
+    Dica: se um pedido for cancelado, use o botão "Excluir" da
+    linha na tela Financeiro.
+
+   SEM a conexão de escrita, funciona assim:
+   - Adicione/edite/exclua no painel (fica registrado na tela)
+   - Clique em "Baixar CSV" (o arquivo SEMPRE sai com a lista
+     COMPLETA e atualizada — todos os perfumes, não só o que
+     você mexeu)
+   - Na planilha: Arquivo → Importar → Upload → selecione o CSV
+   - No diálogo de importação, escolha: "Substituir página atual"
+     ⚠️ IMPORTANTE — o que escolher:
+       ✅ "Substituir página atual" → é a opção certa! Troca o
+          conteúdo da sua aba pelos dados do CSV. A URL da
+          planilha continua a mesma, então o site NÃO quebra.
+       ❌ "Criar nova planilha" → cria uma planilha NOVA com
+          outro endereço. O site perde a conexão até você
+          copiar o novo ID para js/config.js. NÃO use.
+       ❌ "Inserir novas páginas" → adiciona uma aba nova com
+          os produtos, mas a aba antiga continua lá com dados
+          velhos (o site pode mostrar os antigos). NÃO use.
+   - Confirme em "Importar". Pronto: o site do cliente atualiza
+   - No separador, escolha "Vírgula" (ou "Detectar
+     automaticamente") — o CSV do painel usa vírgula
+
+   Alternativa simples: você também pode editar direto na
+   planilha (adicionar linha, mudar célula) — o site lê ao vivo.
+
+   O site do cliente lê o preço da coluna "preco" da planilha.
+   Use ponto (189.90) ou vírgula (189,90) — os dois funcionam.
 
 ═══════════════════════════════════════════════════════════

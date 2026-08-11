@@ -1,0 +1,827 @@
+/* ── Painel Admin — L'air Chic ── */
+
+:root {
+  --cream: #f4efe6;
+  --cream-dark: #e8e0d4;
+  --black: #1a1a1a;
+  --black-soft: #3d3d3d;
+  --gold: #9a8b6f;
+  --accent: #b49a6c;
+  --white: #faf8f5;
+  --danger: #8b4040;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Montserrat", system-ui, sans-serif;
+  --transition: 0.25s ease;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--black);
+  background: linear-gradient(135deg, #f8f3ea 0%, var(--cream) 100%);
+  min-height: 100vh;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* ── Header ── */
+
+.admin-header {
+  background: var(--black);
+  color: var(--white);
+}
+
+.admin-header__inner {
+  width: min(1120px, 92vw);
+  margin-inline: auto;
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-header__logo {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+}
+
+.admin-header__inner h1 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.4rem;
+  line-height: 1.1;
+}
+
+.admin-header__inner p {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  letter-spacing: 0.04em;
+}
+
+.admin-header__actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.admin-header__link {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.admin-header__link:hover {
+  background: var(--accent);
+  color: var(--black);
+  border-color: var(--accent);
+}
+
+.btn-admin--logout {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.5rem 0.9rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.btn-admin--logout:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── Main ── */
+
+.admin-main {
+  width: min(1120px, 94vw);
+  margin-inline: auto;
+  padding: 2rem 0 4rem;
+}
+
+.admin-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.admin-toolbar h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.6rem;
+}
+
+.admin-toolbar__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.admin-notice {
+  background: rgba(180, 154, 108, 0.14);
+  border: 1px solid rgba(180, 154, 108, 0.35);
+  color: var(--black-soft);
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+}
+
+.admin-notice[hidden] {
+  display: none;
+}
+
+/* ── Avisos de produtos esgotados ── */
+
+.admin-warnings {
+  background: #fdf1f1;
+  border: 1px solid rgba(139, 64, 64, 0.35);
+  border-left: 4px solid var(--danger);
+  color: var(--black);
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  margin-bottom: 1.25rem;
+}
+
+.admin-warnings__head h3 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--danger);
+  margin-bottom: 0.15rem;
+}
+
+.admin-warnings__head small {
+  font-size: 0.78rem;
+  color: var(--black-soft);
+}
+
+.admin-warning {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(139, 64, 64, 0.18);
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
+  margin-top: 0.55rem;
+}
+
+.admin-warning__info strong {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.admin-warning__info span {
+  font-size: 0.78rem;
+  color: var(--black-soft);
+}
+
+.admin-warnings[hidden] {
+  display: none;
+}
+
+/* ── Table ── */
+
+.admin-table-wrap {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(180, 154, 108, 0.2);
+  border-radius: 18px;
+  overflow-x: auto;
+  box-shadow: 0 14px 34px rgba(26, 26, 26, 0.05);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 0.9rem 1rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--black-soft);
+  border-bottom: 1px solid var(--cream-dark);
+}
+
+.admin-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(34, 31, 27, 0.06);
+  font-size: 0.875rem;
+  vertical-align: middle;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tr:hover {
+  background: rgba(180, 154, 108, 0.06);
+}
+
+.admin-table__img {
+  width: 64px;
+}
+
+.admin-table__img img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.admin-table__noimg {
+  font-size: 0.6875rem;
+  color: var(--black-soft);
+  font-style: italic;
+}
+
+.admin-table__actions {
+  white-space: nowrap;
+}
+
+/* ── Buttons ── */
+
+.btn-admin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  border: 1px solid rgba(34, 31, 27, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-admin:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+.btn-admin--primary {
+  background: linear-gradient(135deg, var(--accent), #d3b278);
+  color: #fffdf8;
+  border-color: var(--accent);
+}
+
+.btn-admin--primary:hover {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+.btn-admin--danger:hover {
+  background: var(--danger);
+  color: var(--white);
+  border-color: var(--danger);
+}
+
+.btn-admin--small {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.75rem;
+}
+
+/* ── Modal ── */
+
+.admin-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(26, 26, 26, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.admin-modal[hidden] {
+  display: none;
+}
+
+.admin-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.admin-modal__box {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(248, 242, 232, 0.97));
+  width: min(640px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 1.75rem;
+  border-radius: 24px;
+  border: 1px solid rgba(180, 154, 108, 0.25);
+  transform: translateY(18px) scale(0.98);
+  opacity: 0;
+  transition: transform 0.28s ease, opacity 0.28s ease;
+}
+
+.admin-modal.is-open .admin-modal__box {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.admin-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.admin-modal__head h3 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+.admin-modal__close {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--black-soft);
+}
+
+.admin-modal__close:hover {
+  color: var(--black);
+}
+
+/* ── Form ── */
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--black-soft);
+  flex: 1;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+  padding: 0.7rem 0.85rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(34, 31, 27, 0.14);
+  border-radius: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  outline: none;
+  transition: border-color var(--transition);
+  width: 100%;
+}
+
+.admin-form input:focus,
+.admin-form select:focus,
+.admin-form textarea:focus {
+  border-color: var(--accent);
+}
+
+.admin-form small {
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--black-soft);
+  font-size: 0.75rem;
+}
+
+.admin-form__row {
+  display: flex;
+  gap: 1rem;
+}
+
+.admin-form__checks {
+  align-items: center;
+}
+
+.admin-form__checks .check {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.admin-form__checks input {
+  width: auto;
+}
+
+.admin-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.admin-form__hint {
+  font-size: 0.8125rem;
+  color: var(--black-soft);
+  border-top: 1px dashed rgba(34, 31, 27, 0.15);
+  padding-top: 0.85rem;
+}
+
+/* ── Controle financeiro ── */
+
+.finance-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.finance-toolbar h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.6rem;
+}
+
+.finance-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.finance-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(180, 154, 108, 0.22);
+  border-radius: 18px;
+  padding: 1.05rem 1.25rem;
+  box-shadow: 0 10px 26px rgba(26, 26, 26, 0.05);
+}
+
+.finance-card span {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--black-soft);
+  margin-bottom: 0.3rem;
+}
+
+.finance-card strong {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.finance-card--vendas strong {
+  color: #2e7d32;
+}
+
+.finance-card--gastos strong {
+  color: var(--danger);
+}
+
+.finance-card--lucro strong {
+  color: var(--black);
+}
+
+.finance-card--lucro.is-negative strong {
+  color: var(--danger);
+}
+
+.finance-forms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.finance-form {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(180, 154, 108, 0.22);
+  border-radius: 18px;
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.finance-form h3 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 0.15rem;
+}
+
+.finance-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--black-soft);
+}
+
+.finance-form input,
+.finance-form select {
+  padding: 0.65rem 0.8rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(34, 31, 27, 0.14);
+  border-radius: 12px;
+  outline: none;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  width: 100%;
+  transition: border-color var(--transition);
+}
+
+.finance-form input:focus,
+.finance-form select:focus {
+  border-color: var(--accent);
+}
+
+.finance-form .btn-admin {
+  align-self: flex-end;
+  margin-top: 0.2rem;
+}
+
+.finance-list__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.9rem;
+}
+
+.finance-list__head h3 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.finance-filters {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.finance-tab {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(34, 31, 27, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.finance-tab:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+.finance-tab.is-active {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+.finance-table {
+  min-width: 720px;
+}
+
+.finance-badge {
+  display: inline-block;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.finance-badge--venda {
+  background: rgba(46, 125, 50, 0.12);
+  color: #2e7d32;
+}
+
+.finance-badge--gasto {
+  background: rgba(139, 64, 64, 0.12);
+  color: var(--danger);
+}
+
+.finance-valor--venda {
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.finance-valor--gasto {
+  color: var(--danger);
+  font-weight: 500;
+}
+
+/* ── Login screen ── */
+
+.login-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: linear-gradient(160deg, #1a1a1a 0%, #26221c 55%, #33291c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.login-box {
+  width: min(400px, 100%);
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(180, 154, 108, 0.4);
+  border-radius: 24px;
+  padding: 2.4rem 2.2rem;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  animation: login-in 0.4s ease;
+}
+
+@keyframes login-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.login-box__logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 0.9rem;
+}
+
+.login-box__title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.7rem;
+  color: var(--black);
+}
+
+.login-box__subtitle {
+  font-size: 0.85rem;
+  color: var(--black-soft);
+  margin-top: 0.3rem;
+  margin-bottom: 1.5rem;
+}
+
+.login-box__label {
+  display: block;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--black-soft);
+  margin-bottom: 0.4rem;
+}
+
+.login-box__input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: var(--white);
+  border: 1px solid rgba(34, 31, 27, 0.18);
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-align: center;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.login-box__input:focus {
+  border-color: var(--accent);
+}
+
+.login-box__error {
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+  color: var(--danger);
+}
+
+.login-box__notice {
+  margin-top: 0.8rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  padding: 0.6rem 0.7rem;
+  border-radius: 8px;
+  background: #fff8e1;
+  border: 1px solid #f0d47a;
+  color: #7a5c00;
+  text-align: left;
+}
+
+.login-box__submit {
+  width: 100%;
+  margin-top: 1.1rem;
+  padding: 0.8rem;
+}
+
+.login-box__back {
+  display: inline-block;
+  margin-top: 1.1rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: var(--black-soft);
+  opacity: 0.75;
+  transition: opacity var(--transition);
+}
+
+.login-box__back:hover {
+  opacity: 1;
+  color: var(--black);
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 640px) {
+  .admin-form__row {
+    flex-direction: column;
+  }
+
+  .admin-header__inner {
+    flex-wrap: wrap;
+  }
+
+  .admin-header__actions {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .admin-header__link {
+    margin-left: 0;
+  }
+}
+

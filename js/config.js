@@ -14,13 +14,27 @@
  * 4. Preencha PUBLIC_KEY, SERVICE_ID e TEMPLATE_ID abaixo
  */
 const CONFIG = {
-  SHEET_ID: "",
+  SHEET_ID: "1EwGkle7zBDobu2S2OO8sztV9ckpT9LV3-GO3jfE16nU",
 
   EMAILJS: {
     PUBLIC_KEY: "",
     SERVICE_ID: "",
     TEMPLATE_ID: "",
   },
+
+  // Senha de acesso ao Painel Admin (admin.html).
+  // ⚠️ Proteção simples e provisória: por ser um site estático, quem
+  // inspecionar o código no navegador consegue ver a senha. A segurança
+  // de verdade será definida depois (SETUP.txt, seção 6).
+  // Troque pelo valor que desejar.
+  ADMIN_PASSWORD: "lairchic2025",
+
+  // URL do Google Apps Script (conexão do Painel Admin com a planilha).
+  // Como configurar: veja admin/appsscript.js e SETUP.txt (seção 6).
+  // ⚠️ Necessária também para o site do cliente baixar o estoque
+  // automaticamente na planilha quando um pedido é confirmado.
+  // Enquanto estiver vazio, o estoque não é atualizado automaticamente.
+  ADMIN_API_URL: "https://script.google.com/macros/s/AKfycbyHuCbJ9fyjOIa-7jz_LpkT2_AoaT3flRd1LQBQ1b_RM-WPMKBS82k-A4xKVMeU2-0i/exec",
 
   STORE_EMAIL: "lairchicperfumes@gmail.com",
   WHATSAPP: "5521964173559",

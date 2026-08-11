@@ -45,6 +45,7 @@ const Cart = (() => {
         id: product.id,
         nome: product.nome,
         preco: product.preco,
+        imagem: product.imagem || "",
         qty: 1,
       });
     }

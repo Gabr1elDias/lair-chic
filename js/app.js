@@ -4,6 +4,7 @@ const App = (() => {
   let carouselIndex = 0;
   let carouselSlides = [];
   let carouselTimer = null;
+  let toastTimer = null;
 
   const els = {};
 
@@ -18,6 +19,7 @@ const App = (() => {
     els.filterGenero = $("filterGenero");
     els.filterLinha = $("filterLinha");
     els.filterFamilia = $("filterFamilia");
+    els.searchInput = $("searchInput");
     els.filterClear = $("filterClear");
     els.carouselTrack = $("carouselTrack");
     els.carouselDots = $("carouselDots");
@@ -41,6 +43,8 @@ const App = (() => {
     els.submitOrder = $("submitOrder");
     els.successModal = $("successModal");
     els.successClose = $("successClose");
+    els.successStockNote = $("successStockNote");
+    els.cartToast = $("cartToast");
     els.year = $("year");
   }
 
@@ -140,6 +144,7 @@ const App = (() => {
       genero: els.filterGenero.value,
       linha: els.filterLinha.value,
       familia: els.filterFamilia.value,
+      busca: els.searchInput ? els.searchInput.value.trim() : "",
     };
   }
 
@@ -246,9 +251,15 @@ const App = (() => {
     els.cartTotal.textContent = Products.formatPrice(Cart.getTotal());
 
     els.cartList.innerHTML = items
-      .map(
-        (i) => `
+      .map((i) => {
+        const p = Products.getById(i.id);
+        const src = (p && p.imagem) || i.imagem || "";
+        const thumb = src
+          ? `<img src="${src}" alt="${i.nome}" class="cart-item__img" loading="lazy">`
+          : BOTTLE_SVG;
+        return `
         <li class="cart-item">
+          <div class="cart-item__thumb">${thumb}</div>
           <div class="cart-item__info">
             <p class="cart-item__name">${i.nome}</p>
             <p class="cart-item__price">${Products.formatPrice(i.preco)} cada</p>
@@ -259,14 +270,96 @@ const App = (() => {
             </div>
             <button class="cart-item__remove" type="button" data-remove="${i.id}">Remover</button>
           </div>
-        </li>`
-      )
+        </li>`;
+      })
       .join("");
   }
 
   function openWhatsApp(name, observation) {
     const msg = encodeURIComponent(Cart.buildWhatsAppMessage(name, observation));
     window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${msg}`, "_blank", "noopener,noreferrer");
+  }
+
+  function animateAddToCart(name) {
+    // Bump no ícone do carrinho no header
+    els.cartBtn.classList.remove("is-bumping");
+    void els.cartBtn.offsetWidth; // reinicia a animação
+    els.cartBtn.classList.add("is-bumping");
+
+    // Toast "adicionado ao carrinho"
+    if (!els.cartToast) return;
+    els.cartToast.textContent = `✓ ${name} adicionado ao carrinho`;
+    els.cartToast.classList.add("is-visible");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      els.cartToast.classList.remove("is-visible");
+    }, 2000);
+  }
+
+  /**
+   * Baixa o estoque na planilha e registra a venda automaticamente
+   * na aba "Financeiro" (nome do cliente + itens + valor).
+   * Devolve { ok } com o motivo se falhar.
+   */
+  async function updateStockAfterOrder(cliente) {
+    const items = Cart.getItems();
+    if (!items.length) return { ok: true };
+
+    if (!CONFIG.ADMIN_API_URL) {
+      console.warn("ADMIN_API_URL não configurado — estoque não atualizado automaticamente.");
+      return { ok: false, reason: "not-configured" };
+    }
+
+    try {
+      const res = await fetch(CONFIG.ADMIN_API_URL, {
+        method: "POST",
+        // ⚠️ text/plain (não application/json): evita o preflight OPTIONS,
+        // que o Google Apps Script não responde e bloquearia a chamada (CORS).
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          action: "decrementStock",
+          // cliente + nome/preco de cada item: usados pela API para gravar a
+          // venda automaticamente na aba "Financeiro" do painel admin.
+          cliente: cliente || "",
+          items: items.map((i) => ({
+            id: i.id,
+            qty: i.qty,
+            nome: i.nome,
+            preco: i.preco,
+          })),
+        }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!data || !data.ok) {
+        console.warn("Falha ao atualizar estoque na planilha:", data);
+        return { ok: false, reason: "api-error" };
+      }
+      // Estoque atualizado na planilha: reflete no site sem recarregar
+      items.forEach((i) => {
+        const p = Products.getById(i.id);
+        if (p) p.estoque = Math.max(0, (p.estoque || 0) - i.qty);
+      });
+      renderProducts();
+      return { ok: true };
+    } catch (err) {
+      console.error("Erro ao atualizar estoque:", err);
+      return { ok: false, reason: "network" };
+    }
+  }
+
+  function showStockNote(result) {
+    const note = els.successStockNote;
+    if (!note) return;
+    if (result && result.ok) {
+      note.hidden = true;
+      return;
+    }
+    const reason = (result && result.reason) || "network";
+    note.hidden = false;
+    note.textContent =
+      reason === "not-configured"
+        ? "⚠️ Estoque não foi atualizado automaticamente: a conexão com a planilha (ADMIN_API_URL) ainda não está configurada. Veja SETUP.txt, seção 6."
+        : "⚠️ Não foi possível atualizar o estoque na planilha automaticamente. Ajuste o estoque manualmente.";
   }
 
   async function handleSubmitOrder() {
@@ -286,10 +379,12 @@ const App = (() => {
 
     try {
       openWhatsApp(name, observation);
+      const stock = await updateStockAfterOrder(name);
       Cart.clear();
       closeCart();
       els.customerName.value = "";
       els.customerObs.value = "";
+      showStockNote(stock);
       els.successModal.hidden = false;
     } catch (err) {
       console.error(err);
@@ -305,11 +400,16 @@ const App = (() => {
       el.addEventListener("change", renderProducts);
     });
 
+    if (els.searchInput) {
+      els.searchInput.addEventListener("input", renderProducts);
+    }
+
     els.filterClear.addEventListener("click", () => {
       els.filterMarca.value = "";
       els.filterGenero.value = "";
       els.filterLinha.value = "";
       els.filterFamilia.value = "";
+      if (els.searchInput) els.searchInput.value = "";
       renderProducts();
     });
 
@@ -318,7 +418,10 @@ const App = (() => {
       if (addBtn) {
         e.stopPropagation();
         const p = Products.getById(addBtn.dataset.add);
-        if (p) Cart.add(p);
+        if (p) {
+          Cart.add(p);
+          animateAddToCart(p.nome);
+        }
         return;
       }
       const card = e.target.closest(".product-card");
@@ -359,7 +462,10 @@ const App = (() => {
       const btn = e.target.closest("[data-modal-add]");
       if (btn) {
         const p = Products.getById(btn.dataset.modalAdd);
-        if (p) Cart.add(p);
+        if (p) {
+          Cart.add(p);
+          animateAddToCart(p.nome);
+        }
       }
     });
 

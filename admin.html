@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Painel Admin — L'air Chic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <!-- Tela de login (proteção provisória por senha) -->
+  <div class="login-screen" id="loginScreen" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <form class="login-box" id="loginForm" novalidate>
+      <img src="assets/Logo%20L%27AIR%20CHIC%20sem%20fundo.png" alt="L'air Chic" class="login-box__logo" width="140">
+      <h2 class="login-box__title" id="loginTitle">Painel do Admin</h2>
+      <p class="login-box__subtitle">Área restrita — digite a senha para continuar</p>
+      <label class="login-box__label" for="loginPassword">Senha</label>
+      <input type="password" id="loginPassword" class="login-box__input" placeholder="••••••••" autocomplete="current-password" required>
+      <p class="login-box__error" id="loginError" hidden>Senha incorreta. Tente novamente.</p>
+      <p class="login-box__notice" id="loginNotice" hidden></p>
+      <button type="submit" class="btn-admin btn-admin--primary login-box__submit">Entrar</button>
+      <a class="login-box__back" href="index.html">← Voltar ao site da loja</a>
+    </form>
+  </div>
+
+  <!-- Conteúdo do painel (visível somente após o login) -->
+  <div id="adminApp" hidden>
+    <header class="admin-header">
+    <div class="admin-header__inner">
+      <img src="assets/Logo%20L%27AIR%20CHIC%20sem%20fundo.png" alt="L'air Chic" class="admin-header__logo" width="130">
+      <div>
+        <h1>Painel do Admin</h1>
+        <p>Gerencie os perfumes da loja</p>
+      </div>
+      <div class="admin-header__actions">
+        <a class="admin-header__link" href="index.html" target="_blank" rel="noopener">Ver site do cliente ↗</a>
+        <button class="btn-admin btn-admin--logout" id="logoutBtn" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <div class="admin-toolbar" id="adminToolbar">
+      <h2 id="productCount">Carregando perfumes…</h2>
+      <div class="admin-toolbar__actions">
+        <button class="btn-admin" id="exportCsvBtn" type="button">Baixar CSV</button>
+        <button class="btn-admin" id="financeBtn" type="button">💰 Financeiro</button>
+        <button class="btn-admin btn-admin--primary" id="addProductBtn" type="button">+ Adicionar perfume</button>
+      </div>
+    </div>
+
+    <div class="admin-notice" id="connectionNotice" hidden></div>
+
+    <div class="admin-warnings" id="adminWarnings" hidden>
+      <div class="admin-warnings__head">
+        <h3>⚠️ Compras de produtos esgotados</h3>
+        <small>Clientes compraram itens sem pronta entrega. Reponha o estoque ou fale com o cliente e marque como resolvido.</small>
+      </div>
+      <div id="adminWarningsList"></div>
+    </div>
+
+    <div class="admin-table-wrap" id="adminTableWrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Foto</th>
+            <th>Nome</th>
+            <th>Marca</th>
+            <th>Gênero</th>
+            <th>Preço</th>
+            <th>Estoque</th>
+            <th>Destaque</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="productsBody"></tbody>
+      </table>
+      <p class="admin-empty" id="adminEmpty" hidden>Nenhum perfume encontrado.</p>
+    </div>
+
+    <!-- Tela: Controle financeiro -->
+    <section class="admin-finance" id="financeView" hidden>
+      <div class="finance-toolbar">
+        <h2>Controle financeiro</h2>
+        <button class="btn-admin" id="backToProductsBtn" type="button">← Voltar aos perfumes</button>
+      </div>
+
+      <div class="finance-cards">
+        <div class="finance-card finance-card--vendas">
+          <span>Total de vendas</span>
+          <strong id="finTotalVendas">R$ 0,00</strong>
+        </div>
+        <div class="finance-card finance-card--gastos">
+          <span>Total de gastos</span>
+          <strong id="finTotalGastos">R$ 0,00</strong>
+        </div>
+        <div class="finance-card finance-card--lucro" id="finLucroCard">
+          <span>Líquido (vendas − gastos)</span>
+          <strong id="finLucro">R$ 0,00</strong>
+        </div>
+      </div>
+
+      <div class="finance-forms">
+        <form class="finance-form" id="saleForm" novalidate>
+          <h3>➕ Registrar venda</h3>
+          <label>Nome da pessoa *
+            <input type="text" id="saleCliente" required placeholder="ex: Maria Silva">
+          </label>
+          <label>Valor (R$) *
+            <input type="text" id="saleValor" required inputmode="decimal" placeholder="ex: 189,90">
+          </label>
+          <label>O que vendeu
+            <input type="text" id="saleDescricao" placeholder="ex: Sauvage Elixir 100ml">
+          </label>
+          <button type="submit" class="btn-admin btn-admin--primary">Salvar venda</button>
+        </form>
+
+        <form class="finance-form" id="expenseForm" novalidate>
+          <h3>➕ Registrar gasto</h3>
+          <label>Categoria *
+            <select id="expenseCategoria">
+              <option value="Perfume">Perfume</option>
+              <option value="Bolsa">Bolsa</option>
+              <option value="Embalagem">Embalagem</option>
+              <option value="Frete">Frete</option>
+              <option value="Divulgação">Divulgação</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </label>
+          <label>Descrição *
+            <input type="text" id="expenseDescricao" required placeholder="ex: Compra de 5 frascos no fornecedor">
+          </label>
+          <label>Valor (R$) *
+            <input type="text" id="expenseValor" required inputmode="decimal" placeholder="ex: 350,00">
+          </label>
+          <button type="submit" class="btn-admin btn-admin--primary">Salvar gasto</button>
+        </form>
+      </div>
+
+      <div class="finance-list">
+        <div class="finance-list__head">
+          <h3>Lançamentos</h3>
+          <div class="finance-filters" id="financeFilters">
+            <button class="finance-tab is-active" data-ftab="todos" type="button">Todos</button>
+            <button class="finance-tab" data-ftab="venda" type="button">Vendas</button>
+            <button class="finance-tab" data-ftab="gasto" type="button">Gastos</button>
+          </div>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table finance-table">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Tipo</th>
+                <th>Nome / Categoria</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="financeBody"></tbody>
+          </table>
+          <p class="admin-empty" id="financeEmpty" hidden>Nenhum lançamento. Adicione uma venda ou gasto acima.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal: adicionar / editar produto -->
+  <div class="admin-modal" id="productFormModal" hidden>
+    <div class="admin-modal__box">
+      <div class="admin-modal__head">
+        <h3 id="formTitle">Adicionar perfume</h3>
+        <button class="admin-modal__close" id="closeFormBtn" type="button" aria-label="Fechar">&times;</button>
+      </div>
+      <form id="productForm" class="admin-form">
+        <input type="hidden" id="fId">
+        <div class="admin-form__row">
+          <label>Nome *
+            <input type="text" id="fNome" required placeholder="ex: Sauvage Elixir">
+          </label>
+          <label>Marca *
+            <input type="text" id="fMarca" required placeholder="ex: Dior">
+          </label>
+        </div>
+        <div class="admin-form__row">
+          <label>Gênero
+            <select id="fGenero">
+              <option value="Masculino">Masculino</option>
+              <option value="Feminino">Feminino</option>
+              <option value="Unisex">Unisex</option>
+            </select>
+          </label>
+          <label>Linha
+            <select id="fLinha">
+              <option value="Designer">Designer</option>
+              <option value="Nicho">Nicho</option>
+              <option value="Arabe">Árabe</option>
+              <option value="Nacional">Nacional</option>
+            </select>
+          </label>
+        </div>
+        <div class="admin-form__row">
+          <label>Família olfativa
+            <input type="text" id="fFamilia" placeholder="ex: Amadeirado">
+          </label>
+          <label>Estoque
+            <input type="number" id="fEstoque" min="0" value="0">
+          </label>
+        </div>
+        <label>Preço (R$)
+          <input type="text" id="fPreco" value="70" inputmode="decimal" placeholder="70">
+          <small>Ex.: 189.90 ou 189,90 — o site do cliente exibe este valor.</small>
+        </label>
+        <label>Descrição
+          <textarea id="fDescricao" rows="3" placeholder="Texto que aparece na ficha do perfume"></textarea>
+        </label>
+        <label>URL da imagem
+          <input type="url" id="fImagem" placeholder="https://... (Google Drive, Imgur, etc.)">
+          <small>Use uma imagem quadrada de 1.000 x 1.000 px (fica perfeita no site).</small>
+        </label>
+        <div class="admin-form__row admin-form__checks">
+          <label class="check"><input type="checkbox" id="fDestaque"> Destaque</label>
+          <label class="check"><input type="checkbox" id="fNovidade"> Novidade</label>
+          <label class="check"><input type="checkbox" id="fAtivo" checked> Ativo</label>
+        </div>
+        <div class="admin-form__actions">
+          <button type="button" class="btn-admin" id="cancelFormBtn">Cancelar</button>
+          <button type="submit" class="btn-admin btn-admin--primary" id="saveBtn">Salvar</button>
+        </div>
+        <p class="admin-form__hint" id="formHint"></p>
+      </form>
+    </div>
+  </div>
+
+  </div><!-- /adminApp -->
+
+  <script src="js/config.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,11 +1,27 @@
 const Products = (() => {
   let all = [];
-  const FIXED_PRICE = 70;
 
   function parseBool(value) {
     if (typeof value === "boolean") return value;
     const v = String(value || "").trim().toLowerCase();
     return v === "sim" || v === "true" || v === "1" || v === "yes";
+  }
+
+  function parsePrice(v) {
+    if (v == null || v === "") return 0;
+    if (typeof v === "number") return isFinite(v) ? v : 0;
+    const s = String(v).replace(/[^\d.,]/g, "");
+    if (!s) return 0;
+    // pt-BR: última vírgula é o separador decimal; "." separa milhares.
+    const lastComma = s.lastIndexOf(",");
+    const lastDot = s.lastIndexOf(".");
+    let n;
+    if (lastComma > lastDot) {
+      n = parseFloat(s.replace(/\./g, "").replace(",", "."));
+    } else {
+      n = parseFloat(s.replace(/,/g, ""));
+    }
+    return isFinite(n) ? n : 0;
   }
 
   function normalize(row) {
@@ -16,7 +32,7 @@ const Products = (() => {
       genero: String(row.genero || row.Genero || row.gênero || "").trim(),
       linha: String(row.linha || row.Linha || "").trim(),
       familia: String(row.familia || row.Familia || row.família || "").trim(),
-      preco: FIXED_PRICE,
+      preco: parsePrice(row.preco || row.Preco),
       estoque: parseInt(String(row.estoque || row.Estoque || "0"), 10) || 0,
       descricao: String(row.descricao || row.Descricao || row.descrição || "").trim(),
       imagem: String(row.imagem || row.Imagem || "").trim(),
@@ -89,6 +105,11 @@ const Products = (() => {
       if (filters.genero && p.genero !== filters.genero) return false;
       if (filters.linha && p.linha !== filters.linha) return false;
       if (filters.familia && p.familia !== filters.familia) return false;
+      if (filters.busca) {
+        const q = filters.busca.toLowerCase();
+        const haystack = [p.nome, p.marca, p.linha, p.familia, p.descricao].join(" ").toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
       return true;
     });
   }

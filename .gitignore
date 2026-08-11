@@ -1,0 +1,6 @@
+# Logs do servidor local (criados ao subir com npx serve)
+server.log
+server.err.log
+
+# Dependências (não há build no projeto, mas por segurança)
+node_modules/
