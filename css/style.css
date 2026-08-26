@@ -109,15 +109,9 @@ textarea {
   padding: 1rem 0;
 }
 
-.header__link {
-  font-size: 0.77rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--black-soft);
-}
-
 .header__logo {
   justify-self: center;
+  align-self: center;
 }
 
 .header__logo img {
@@ -125,6 +119,16 @@ textarea {
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 8px 18px rgba(26, 26, 26, 0.12));
+}
+
+.filter-toggle {
+  justify-self: start;
+  align-self: center;
+}
+
+.cart-btn {
+  justify-self: end;
+  align-self: center;
 }
 
 .cart-btn {
@@ -230,6 +234,10 @@ textarea {
   transition: opacity var(--transition), visibility var(--transition);
 }
 
+.filter-overlay[hidden] {
+  display: none !important;
+}
+
 .filter-overlay:not([hidden]) {
   opacity: 1;
   visibility: visible;
@@ -250,6 +258,10 @@ textarea {
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 30px 60px rgba(26, 26, 26, 0.12);
   overflow: hidden;
+}
+
+.filter-drawer[hidden] {
+  display: none !important;
 }
 
 .filter-drawer:not([hidden]) {
