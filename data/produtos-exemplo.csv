@@ -1,9 +1,9 @@
-id,nome,marca,genero,linha,familia,preco,estoque,descricao,imagem,destaque,novidade,ativo
-1,Sauvage Elixir,Dior,Masculino,Designer,Amadeirado,189.90,3,Fragrância intensa e amadeirada com notas de licor de vinho e lavanda. Ideal para noites especiais.,,sim,nao,sim
-2,Miss Dior,Dior,Feminino,Designer,Floral,175.00,5,Floral romântico com rosa de Grasse e patchouli. Elegância atemporal em 25ml.,,sim,nao,sim
-3,Club de Nuit Intense,Armaf,Masculino,Arabe,Amadeirado,89.90,0,Inspirado em fragrâncias nichadas. Abertura cítrica com fundo amadeirado e especiado.,,sim,nao,sim
-4,Baccarat Rouge 540,Maison Francis,Unisex,Nicho,Doce,249.00,2,Doce e aéreo com açafrão e ambroxan. Um dos mais desejados do mundo.,,nao,sim,sim
-5,Light Blue,Dolce & Gabbana,Feminino,Designer,Citrico,159.00,4,Fresh e cítrico com maçã siciliana e madeira branca. Verão em uma fragrância.,,nao,sim,sim
-6,Oud for Glory,Armaf,Masculino,Arabe,Amadeirado,79.90,6,Oud intenso com lavanda e especiarias. Presença marcante e sofisticada.,,nao,nao,sim
-7,Erba Pura,Xerjoff,Unisex,Nicho,Doce,299.00,1,Frutado doce com frutas exóticas e baunilha. Luxo em estado puro.,,nao,nao,sim
-8,Acqua di Gio,Giorgio Armani,Masculino,Designer,Citrico,169.90,7,Clássico aquático cítrico com notas marinhas. Frescor elegante para o dia a dia.,,nao,nao,sim
+id,nome,marca,genero,linha,familia,volume,preco,estoque,descricao,imagem,destaque,novidade,ativo
+1,Sauvage Elixir,Dior,Masculino,Designer,Amadeirado,25ml,189.90,3,Fragrância intensa e amadeirada com notas de licor de vinho e lavanda. Ideal para noites especiais.,,sim,nao,sim
+2,Miss Dior,Dior,Feminino,Designer,Floral,25ml,175.00,5,Floral romântico com rosa de Grasse e patchouli. Elegância atemporal em 25ml.,,sim,nao,sim
+3,Club de Nuit Intense,Armaf,Masculino,Arabe,Amadeirado,25ml,89.90,0,Inspirado em fragrâncias nichadas. Abertura cítrica com fundo amadeirado e especiado.,,sim,nao,sim
+4,Baccarat Rouge 540,Maison Francis,Unisex,Nicho,Doce,25ml,249.00,2,Doce e aéreo com açafrão e ambroxan. Um dos mais desejados do mundo.,,nao,sim,sim
+5,Light Blue,Dolce & Gabbana,Feminino,Designer,Citrico,25ml,159.00,4,Fresh e cítrico com maçã siciliana e madeira branca. Verão em uma fragrância.,,nao,sim,sim
+6,Oud for Glory,Armaf,Masculino,Arabe,Amadeirado,25ml,79.90,6,Oud intenso com lavanda e especiarias. Presença marcante e sofisticada.,,nao,nao,sim
+7,Erba Pura,Xerjoff,Unisex,Nicho,Doce,25ml,299.00,1,Frutado doce com frutas exóticas e baunilha. Luxo em estado puro.,,nao,nao,sim
+8,Acqua di Gio,Giorgio Armani,Masculino,Designer,Citrico,25ml,169.90,7,Clássico aquático cítrico com notas marinhas. Frescor elegante para o dia a dia.,,nao,nao,sim

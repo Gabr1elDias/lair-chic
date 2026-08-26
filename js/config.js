@@ -39,5 +39,6 @@ const CONFIG = {
   STORE_EMAIL: "lairchicperfumes@gmail.com",
   WHATSAPP: "5521964173559",
   INSTAGRAM: "https://www.instagram.com/lairchic/",
-  VOLUME: "25ml",
+  VOLUMES: ["25ml", "50ml", "75ml", "100ml", "150ml", "200ml"],
+  DEFAULT_VOLUME: "25ml",
 };

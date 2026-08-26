@@ -45,6 +45,7 @@ const Cart = (() => {
         id: product.id,
         nome: product.nome,
         preco: product.preco,
+        volume: product.volume || (typeof CONFIG !== 'undefined' && CONFIG.DEFAULT_VOLUME ? CONFIG.DEFAULT_VOLUME : "25ml"),
         imagem: product.imagem || "",
         qty: 1,
       });
@@ -74,7 +75,7 @@ const Cart = (() => {
 
   function buildWhatsAppMessage(name, observation) {
     const lines = items.map(
-      (i) => `${i.qty}x ${i.nome} (${Products.formatPrice(i.preco)})`
+      (i) => `${i.qty}x ${i.nome} ${i.volume ? `(${i.volume})` : ''} (${Products.formatPrice(i.preco)})`
     );
     const total = Products.formatPrice(getTotal());
     let msg = `Olá! Sou ${name}. Fiz um pedido de: ${lines.join(", ")}. Total: ${total}.`;

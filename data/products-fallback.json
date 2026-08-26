@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "id": "1",
     "nome": "Sauvage Elixir",
@@ -12,7 +12,8 @@
     "imagem": "assets/Fotos%20Masculino/Brand_M_001.png",
     "destaque": true,
     "novidade": false,
-    "ativo": true
+    "ativo": true,
+    "volume": "25ml"
   },
   {
     "id": "2",
@@ -27,7 +28,8 @@
     "imagem": "assets/Fotos%20Feminino/brand_F_003.png",
     "destaque": true,
     "novidade": false,
-    "ativo": true
+    "ativo": true,
+    "volume": "25ml"
   },
   {
     "id": "3",
@@ -42,7 +44,8 @@
     "imagem": "assets/Fotos%20Masculino/Brand_M_005.png",
     "destaque": true,
     "novidade": false,
-    "ativo": true
+    "ativo": true,
+    "volume": "25ml"
   },
   {
     "id": "4",
@@ -57,7 +60,8 @@
     "imagem": "assets/Fotos%20Feminino/brand_F_007.png",
     "destaque": false,
     "novidade": true,
-    "ativo": true
+    "ativo": true,
+    "volume": "25ml"
   },
   {
     "id": "5",
@@ -72,7 +76,8 @@
     "imagem": "assets/Fotos%20Feminino/brand_F_009.png",
     "destaque": false,
     "novidade": true,
-    "ativo": true
+    "ativo": true,
+    "volume": "25ml"
   },
   {
     "id": "6",
@@ -87,7 +92,8 @@
     "imagem": "assets/Fotos%20Masculino/Brand_M_008.png",
     "destaque": false,
     "novidade": false,
-    "ativo": true
+    "ativo": true,
+    "volume": "25ml"
   },
   {
     "id": "7",
@@ -102,7 +108,8 @@
     "imagem": "assets/Fotos%20Feminino/brand_F_012.png",
     "destaque": false,
     "novidade": false,
-    "ativo": true
+    "ativo": true,
+    "volume": "25ml"
   },
   {
     "id": "8",
@@ -117,6 +124,7 @@
     "imagem": "assets/Fotos%20Masculino/Brand_M_010.png",
     "destaque": false,
     "novidade": false,
-    "ativo": true
+    "ativo": true,
+    "volume": "25ml"
   }
 ]

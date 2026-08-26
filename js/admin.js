@@ -10,7 +10,7 @@
  */
 const Admin = (() => {
   const COLS = [
-    "id", "nome", "marca", "genero", "linha", "familia", "preco",
+    "id", "nome", "marca", "genero", "linha", "familia", "volume", "preco",
     "estoque", "descricao", "imagem", "destaque", "novidade", "ativo",
   ];
 
@@ -451,6 +451,7 @@ const Admin = (() => {
     $("fGenero").value = p && p.genero ? p.genero : "Masculino";
     $("fLinha").value = p && p.linha ? p.linha : "Designer";
     $("fFamilia").value = p ? p.familia : "";
+    $("fVolume").value = p && p.volume ? p.volume : (CONFIG.DEFAULT_VOLUME || "25ml");
     $("fPreco").value = p ? p.preco : 70;
     $("fEstoque").value = p ? p.estoque : 0;
     $("fDescricao").value = p ? p.descricao : "";
@@ -483,6 +484,7 @@ const Admin = (() => {
       genero: $("fGenero").value,
       linha: $("fLinha").value,
       familia: $("fFamilia").value.trim(),
+      volume: $("fVolume").value,
       preco: parseFloat(String($("fPreco").value).replace(",", ".")) || 70,
       estoque: parseInt($("fEstoque").value, 10) || 0,
       descricao: $("fDescricao").value.trim(),

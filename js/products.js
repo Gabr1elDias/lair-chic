@@ -39,6 +39,7 @@ const Products = (() => {
       destaque: parseBool(row.destaque || row.Destaque),
       novidade: parseBool(row.novidade || row.Novidade),
       ativo: parseBool(row.ativo !== undefined ? row.ativo : row.Ativo !== undefined ? row.Ativo : true),
+      volume: String(row.volume || row.Volume || CONFIG.DEFAULT_VOLUME || "25ml").trim(),
     };
   }
 

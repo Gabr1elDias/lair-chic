@@ -65,7 +65,7 @@ function doPost(e) {
 
     // Se a planilha estiver vazia, cria o cabeçalho
     if (sheet.getLastRow() === 0) {
-      sheet.appendRow(["id", "nome", "marca", "genero", "linha", "familia", "preco", "estoque", "descricao", "imagem", "destaque", "novidade", "ativo"]);
+      sheet.appendRow(["id", "nome", "marca", "genero", "linha", "familia", "volume", "preco", "estoque", "descricao", "imagem", "destaque", "novidade", "ativo"]);
     }
 
     const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
@@ -299,7 +299,7 @@ function readFinance(fs) {
 
 /** Monta a linha da planilha na ordem das colunas. */
 function buildRow(headers, p) {
-  const order = ["id", "nome", "marca", "genero", "linha", "familia", "preco", "estoque", "descricao", "imagem", "destaque", "novidade", "ativo"];
+  const order = ["id", "nome", "marca", "genero", "linha", "familia", "volume", "preco", "estoque", "descricao", "imagem", "destaque", "novidade", "ativo"];
   return order.map((k) => {
     if (k === "destaque" || k === "novidade" || k === "ativo") {
       return p[k] ? "sim" : "nao";

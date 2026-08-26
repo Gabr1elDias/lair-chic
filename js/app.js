@@ -172,7 +172,7 @@ const App = (() => {
         <div class="product-card__body">
           <span class="product-card__brand">${p.marca}</span>
           <h3 class="product-card__name">${p.nome}</h3>
-          <span class="product-card__volume">${CONFIG.VOLUME}</span>
+          <span class="product-card__volume">${p.volume || CONFIG.DEFAULT_VOLUME || "25ml"}</span>
           <div class="product-card__footer">
             <span class="product-card__price">${Products.formatPrice(p.preco)}</span>
             <button class="product-card__add" data-add="${p.id}" aria-label="Adicionar ao carrinho">+</button>
@@ -195,7 +195,7 @@ const App = (() => {
           <span class="modal-product__tag">${p.genero}</span>
           <span class="modal-product__tag">${p.linha}</span>
           <span class="modal-product__tag">${p.familia}</span>
-          <span class="modal-product__tag">${CONFIG.VOLUME}</span>
+          <span class="modal-product__tag">${p.volume || CONFIG.DEFAULT_VOLUME || "25ml"}</span>
         </div>
         <p class="modal-product__desc">${p.descricao || "Descrição em breve."}</p>
         <p class="modal-product__stock${out ? " modal-product__stock--out" : ""}">
@@ -282,6 +282,7 @@ const App = (() => {
           <div class="cart-item__thumb">${thumb}</div>
           <div class="cart-item__info">
             <p class="cart-item__name">${i.nome}</p>
+            ${i.volume ? `<p class="cart-item__volume">${i.volume}</p>` : ''}
             <p class="cart-item__price">${Products.formatPrice(i.preco)} cada</p>
             <div class="cart-item__qty">
               <button type="button" data-qty-minus="${i.id}" aria-label="Diminuir">−</button>
