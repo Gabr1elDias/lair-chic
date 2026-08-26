@@ -17,7 +17,12 @@
   <header class="header">
     <div class="header__accent"></div>
     <div class="header__inner">
-      <a href="#colecao" class="header__link">Coleção</a>
+      <button class="filter-toggle" id="filterToggle" aria-label="Abrir filtros" aria-expanded="false" aria-controls="filterDrawer">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M3 6h18M3 12h18M3 18h18"/>
+        </svg>
+        <span class="filter-toggle__text">Filtros</span>
+      </button>
       <a href="#" class="header__logo" aria-label="L'air Chic — início">
         <img src="assets/Logo%20L%27AIR%20CHIC%20sem%20fundo.png" alt="L'air Chic" width="140" height="auto">
       </a>
@@ -31,6 +36,56 @@
       </button>
     </div>
   </header>
+
+  <!-- Filter Drawer (Mobile) -->
+  <div class="filter-overlay" id="filterOverlay" hidden></div>
+  <aside class="filter-drawer" id="filterDrawer" aria-label="Filtros de produtos">
+    <div class="filter-drawer__header">
+      <h3 class="filter-drawer__title">Filtrar perfumes</h3>
+      <button class="filter-drawer__close" id="filterDrawerClose" aria-label="Fechar filtros">&times;</button>
+    </div>
+    <div class="filter-drawer__body">
+      <div class="filters" id="mobileFilters">
+        <div class="filters__inner">
+          <div class="filter-group">
+            <label for="filterMarca">Marca</label>
+            <select id="filterMarca">
+              <option value="">Todas</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filterGenero">Gênero</label>
+            <select id="filterGenero">
+              <option value="">Todos</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Feminino">Feminino</option>
+              <option value="Unisex">Unisex</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filterLinha">Linha</label>
+            <select id="filterLinha">
+              <option value="">Todas</option>
+              <option value="Arabe">Árabe</option>
+              <option value="Nicho">Nicho</option>
+              <option value="Designer">Designer</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filterFamilia">Família</label>
+            <select id="filterFamilia">
+              <option value="">Todas</option>
+              <option value="Doce">Doce</option>
+              <option value="Amadeirado">Amadeirado</option>
+              <option value="Floral">Floral</option>
+              <option value="Citrico">Cítrico</option>
+            </select>
+          </div>
+          <button class="filter-clear" id="filterClear" type="button">Limpar</button>
+        </div>
+      </div>
+    </div>
+  </aside>
 
   <main>
     <section class="hero" aria-label="Destaques">
@@ -68,43 +123,6 @@
               <path d="M21 21l-4.35-4.35"/>
             </svg>
             <input type="search" id="searchInput" placeholder="Buscar perfume, marca ou família olfativa…" autocomplete="off" aria-label="Buscar produtos">
-          </div>
-          <div class="filters__inner">
-            <div class="filter-group">
-              <label for="filterMarca">Marca</label>
-              <select id="filterMarca">
-                <option value="">Todas</option>
-              </select>
-            </div>
-            <div class="filter-group">
-              <label for="filterGenero">Gênero</label>
-              <select id="filterGenero">
-                <option value="">Todos</option>
-                <option value="Masculino">Masculino</option>
-                <option value="Feminino">Feminino</option>
-                <option value="Unisex">Unisex</option>
-              </select>
-            </div>
-            <div class="filter-group">
-              <label for="filterLinha">Linha</label>
-              <select id="filterLinha">
-                <option value="">Todas</option>
-                <option value="Arabe">Árabe</option>
-                <option value="Nicho">Nicho</option>
-                <option value="Designer">Designer</option>
-              </select>
-            </div>
-            <div class="filter-group">
-              <label for="filterFamilia">Família</label>
-              <select id="filterFamilia">
-                <option value="">Todas</option>
-                <option value="Doce">Doce</option>
-                <option value="Amadeirado">Amadeirado</option>
-                <option value="Floral">Floral</option>
-                <option value="Citrico">Cítrico</option>
-              </select>
-            </div>
-            <button class="filter-clear" id="filterClear" type="button">Limpar</button>
           </div>
         </div>
 
