@@ -1313,17 +1313,18 @@ textarea {
 
 /* ── Responsive ── */
 
-@media (max-width: 860px) {
-  .filter-toggle {
-    display: flex;
-    justify-self: start;
-  }
-
-  .filters__inner {
-    display: none;
-  }
+/* Filter toggle visível em TODAS as telas (desktop + mobile) */
+.filter-toggle {
+  display: flex;
+  justify-self: start;
 }
 
+/* Esconde os filtros inline (desktop) já que vão pro drawer */
+.filters__inner {
+  display: none;
+}
+
+/* Ajustes mobile (≤640px) */
 @media (max-width: 640px) {
   .header__logo img {
     height: 56px;
