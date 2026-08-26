@@ -17,6 +17,8 @@
       <img src="assets/Logo%20L%27AIR%20CHIC%20sem%20fundo.png" alt="L'air Chic" class="login-box__logo" width="140">
       <h2 class="login-box__title" id="loginTitle">Painel do Admin</h2>
       <p class="login-box__subtitle">Área restrita — digite a senha para continuar</p>
+      <!-- Username oculto para acessibilidade (evita aviso do Chrome) -->
+      <input type="text" id="loginUsername" name="username" autocomplete="username" hidden>
       <label class="login-box__label" for="loginPassword">Senha</label>
       <input type="password" id="loginPassword" class="login-box__input" placeholder="••••••••" autocomplete="current-password" required>
       <p class="login-box__error" id="loginError" hidden>Senha incorreta. Tente novamente.</p>

@@ -8,6 +8,9 @@
  *   2. Cole a URL da Web App em js/config.js → ADMIN_API_URL
  * Sem isso, use "Baixar CSV" e importe na planilha.
  */
+// Debug: confirm admin.js carregou
+console.log('[Admin] admin.js carregado - versão com debug de login');
+
 const Admin = (() => {
   const COLS = [
     "id", "nome", "marca", "genero", "linha", "familia", "volume", "preco",
@@ -23,6 +26,7 @@ const Admin = (() => {
   }
 
   function initElements() {
+    console.log('[Admin] initElements chamado');
     els.productsBody = $("productsBody");
     els.adminEmpty = $("adminEmpty");
     els.productCount = $("productCount");
@@ -603,6 +607,7 @@ const Admin = (() => {
   }
 
   function bindEvents() {
+    console.log('[Admin] bindEvents chamado');
     els.addProductBtn.addEventListener("click", () => openForm(null));
     els.closeFormBtn.addEventListener("click", closeForm);
     els.cancelFormBtn.addEventListener("click", closeForm);
@@ -673,6 +678,7 @@ const Admin = (() => {
   }
 
   async function init() {
+    console.log('[Admin] init chamado');
     initElements();
     bindEvents();
     showFileWarning();
