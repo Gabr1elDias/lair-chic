@@ -110,11 +110,21 @@ textarea {
   gap: 1rem;
 }
 
+/* Posicionamento explícito para não quebrar quando filter-toggle some no desktop */
+.filter-toggle {
+  grid-column: 1;
+}
 .header__logo {
+  grid-column: 2;
   justify-self: center;
   align-self: center;
   display: flex;
   align-items: center;
+}
+.cart-btn {
+  grid-column: 3;
+  justify-self: end;
+  align-self: center;
 }
 
 .header__logo img {
@@ -130,11 +140,6 @@ textarea {
   align-self: center;
   display: flex;
   align-items: center;
-}
-
-.cart-btn {
-  justify-self: end;
-  align-self: center;
 }
 
 .cart-btn {
