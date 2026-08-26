@@ -46,6 +46,11 @@ const App = (() => {
     els.successStockNote = $("successStockNote");
     els.cartToast = $("cartToast");
     els.year = $("year");
+    // Filter drawer (mobile)
+    els.filterToggle = $("filterToggle");
+    els.filterOverlay = $("filterOverlay");
+    els.filterDrawer = $("filterDrawer");
+    els.filterDrawerClose = $("filterDrawerClose");
   }
 
   function productImage(product, className = "") {
@@ -230,6 +235,21 @@ const App = (() => {
     els.cartOverlay.hidden = true;
     els.cartDrawer.classList.remove("drawer--open");
     document.body.style.overflow = "";
+  }
+
+  // Filter drawer (mobile)
+  function openFilterDrawer() {
+    els.filterOverlay.hidden = false;
+    els.filterDrawer.hidden = false;
+    document.body.style.overflow = "hidden";
+    els.filterToggle.setAttribute("aria-expanded", "true");
+  }
+
+  function closeFilterDrawer() {
+    els.filterOverlay.hidden = true;
+    els.filterDrawer.hidden = true;
+    document.body.style.overflow = "";
+    els.filterToggle.setAttribute("aria-expanded", "false");
   }
 
   function renderCart() {
@@ -473,6 +493,11 @@ const App = (() => {
     els.cartClose.addEventListener("click", closeCart);
     els.cartOverlay.addEventListener("click", closeCart);
 
+    // Filter drawer (mobile)
+    els.filterToggle.addEventListener("click", openFilterDrawer);
+    els.filterOverlay.addEventListener("click", closeFilterDrawer);
+    els.filterDrawerClose.addEventListener("click", closeFilterDrawer);
+
     els.cartList.addEventListener("click", (e) => {
       if (e.target.dataset.qtyPlus) Cart.updateQty(e.target.dataset.qtyPlus, 1);
       if (e.target.dataset.qtyMinus) Cart.updateQty(e.target.dataset.qtyMinus, -1);
@@ -493,6 +518,7 @@ const App = (() => {
       if (e.key === "Escape") {
         closeProductModal();
         closeCart();
+        closeFilterDrawer();
         els.successModal.hidden = true;
       }
     });
