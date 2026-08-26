@@ -161,12 +161,14 @@ const App = (() => {
 
   function renderProductCard(p) {
     const out = Products.isOutOfStock(p);
-    const isBestSeller = Number(p.id) <= 4;
+    const isBestSeller = p.destaque; // usa o campo "destaque" = BEST SELLER
+    const isNovidade = p.novidade;
     return `
       <article class="product-card" data-id="${p.id}">
         <div class="product-card__image">
           ${productImage(p)}
           ${isBestSeller ? '<span class="product-card__badge product-card__badge--best">Best seller</span>' : ""}
+          ${isNovidade ? '<span class="product-card__badge product-card__badge--new">Novidade</span>' : ""}
           ${out ? '<span class="product-card__badge product-card__badge--out">Esgotado</span>' : ""}
         </div>
         <div class="product-card__body">
@@ -191,6 +193,10 @@ const App = (() => {
         ${p.imagem ? `<div style="aspect-ratio:1;background:var(--cream);margin:-2rem -2rem 1.5rem;display:flex;align-items:center;justify-content:center;">${productImage(p)}</div>` : ""}
         <span class="modal-product__brand">${p.marca}</span>
         <h2 class="modal-product__name" id="modalTitle">${p.nome}</h2>
+        <div class="modal-product__badges">
+          ${p.destaque ? '<span class="modal-product__badge modal-product__badge--best">Best seller</span>' : ""}
+          ${p.novidade ? '<span class="modal-product__badge modal-product__badge--new">Novidade</span>' : ""}
+        </div>
         <div class="modal-product__tags">
           <span class="modal-product__tag">${p.genero}</span>
           <span class="modal-product__tag">${p.linha}</span>

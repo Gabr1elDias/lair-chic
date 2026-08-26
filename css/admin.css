@@ -650,6 +650,35 @@ textarea {
   min-width: 720px;
 }
 
+/* ── Admin badges (tabela de produtos) ── */
+
+.admin-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.admin-badge--best {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.admin-badge--new {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.admin-badge--off {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* ── Finance badges ── */
+
 .finance-badge {
   display: inline-block;
   padding: 0.18rem 0.6rem;

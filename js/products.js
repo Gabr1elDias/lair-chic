@@ -60,6 +60,7 @@ const Products = (() => {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Falha ao carregar planilha");
     const text = await res.text();
+    // Filtra apenas produtos ativos (não desativados) e com nome
     return parseGoogleResponse(text).filter((p) => p.ativo && p.nome);
   }
 
@@ -67,7 +68,8 @@ const Products = (() => {
     const res = await fetch("data/products-fallback.json");
     if (!res.ok) throw new Error("Falha ao carregar produtos locais");
     const data = await res.json();
-    return data.map(normalize);
+    // Filtra apenas produtos ativos (não desativados)
+    return data.map(normalize).filter((p) => p.ativo);
   }
 
   async function load() {
@@ -84,7 +86,12 @@ const Products = (() => {
   }
 
   function getAll() {
-    return all;
+    // Ordena: BEST SELLER (destaque) primeiro, depois NOVIDADE (novidade), depois o resto
+    return [...all].sort((a, b) => {
+      const scoreA = (a.destaque ? 2 : 0) + (a.novidade ? 1 : 0);
+      const scoreB = (b.destaque ? 2 : 0) + (b.novidade ? 1 : 0);
+      return scoreB - scoreA; // maior score primeiro
+    });
   }
 
   function getById(id) {

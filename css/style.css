@@ -729,6 +729,11 @@ textarea {
   letter-spacing: 0.12em;
 }
 
+.product-card__badge--new {
+  background: var(--accent);
+  color: var(--white);
+}
+
 .product-card__badge--out {
   top: 3rem;
   background: var(--danger);
@@ -895,6 +900,31 @@ textarea {
   font-size: 1.75rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
+}
+
+.modal-product__badges {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.modal-product__badge {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+}
+
+.modal-product__badge--best {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.modal-product__badge--new {
+  background: #dbeafe;
+  color: #1e40af;
 }
 
 .modal-product__tags {

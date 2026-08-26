@@ -185,7 +185,11 @@ const Admin = (() => {
           <td>${p.genero || "—"}</td>
           <td>${formatPrice(p.preco)}</td>
           <td>${p.estoque}</td>
-          <td>${bool(p.destaque) ? "★" : ""}</td>
+          <td>
+            ${bool(p.destaque) ? '<span class="admin-badge admin-badge--best">BEST SELLER</span>' : ""}
+            ${bool(p.novidade) ? '<span class="admin-badge admin-badge--new">Novidade</span>' : ""}
+            ${!bool(p.ativo) ? '<span class="admin-badge admin-badge--off">Desativado</span>' : ""}
+          </td>
           <td class="admin-table__actions">
             <button type="button" class="btn-admin btn-admin--small" data-edit="${p.id}">Editar</button>
             <button type="button" class="btn-admin btn-admin--small btn-admin--danger" data-del="${p.id}">Excluir</button>
@@ -458,7 +462,8 @@ const Admin = (() => {
     $("fImagem").value = p ? p.imagem : "";
     $("fDestaque").checked = p ? bool(p.destaque) : false;
     $("fNovidade").checked = p ? bool(p.novidade) : false;
-    $("fAtivo").checked = p ? bool(p.ativo) : true;
+    // "Desativado" é o inverso de "ativo" - se ativo=false, desativado=true
+    $("fDesativado").checked = p ? !bool(p.ativo) : false;
 
     els.formHint.textContent = CONFIG.ADMIN_API_URL
       ? "🔌 Salva direto na planilha → o site do cliente atualiza na hora."
@@ -491,7 +496,8 @@ const Admin = (() => {
       imagem: $("fImagem").value.trim(),
       destaque: $("fDestaque").checked ? "sim" : "nao",
       novidade: $("fNovidade").checked ? "sim" : "nao",
-      ativo: $("fAtivo").checked ? "sim" : "nao",
+      // "Desativado" é o inverso - planilha espera "ativo"
+      ativo: $("fDesativado").checked ? "nao" : "sim",
     };
   }
 
