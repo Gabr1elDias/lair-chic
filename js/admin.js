@@ -524,16 +524,21 @@ const Admin = (() => {
 
     if (CONFIG.ADMIN_API_URL) {
       try {
-        await fetch(CONFIG.ADMIN_API_URL, {
+        const res = await fetch(CONFIG.ADMIN_API_URL, {
           method: "POST",
-          // text/plain evita o preflight OPTIONS (CORS) que o Apps Script não responde.
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify({ action: editingId ? "update" : "add", product: data }),
         });
-        showNotice("✅ Salvo na planilha. O site do cliente já está atualizado.");
+        const result = await res.json().catch(() => ({ ok: false, error: "Resposta inválida" }));
+        if (result.ok) {
+          showNotice("✅ Salvo na planilha. O site do cliente já está atualizado.");
+        } else {
+          console.error("Erro da API:", result.error);
+          showNotice("⚠️ Falha ao salvar: " + (result.error || "Erro desconhecido"));
+        }
       } catch (err) {
         console.error(err);
-        showNotice("⚠️ Não consegui salvar na planilha. Use 'Baixar CSV' para atualizar manualmente.");
+        showNotice("⚠️ Erro de rede ao salvar. Use 'Baixar CSV' para atualizar manualmente.");
       }
     } else {
       showNotice("💾 Alteração registrada. Use 'Baixar CSV' e importe na planilha para o site do cliente atualizar.");
@@ -549,14 +554,23 @@ const Admin = (() => {
     renderTable();
 
     if (CONFIG.ADMIN_API_URL) {
-      fetch(CONFIG.ADMIN_API_URL, {
-        method: "POST",
-        // text/plain evita o preflight OPTIONS (CORS) que o Apps Script não responde.
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ action: "delete", id: String(id) }),
-      })
-        .then(() => showNotice("🗑️ Excluído da planilha."))
-        .catch(() => showNotice("⚠️ Excluído aqui, mas não consegui salvar na planilha. Use 'Baixar CSV'."));
+      try {
+        const res = await fetch(CONFIG.ADMIN_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "delete", id: String(id) }),
+        });
+        const result = await res.json().catch(() => ({ ok: false, error: "Resposta inválida" }));
+        if (result.ok) {
+          showNotice("🗑️ Excluído da planilha.");
+        } else {
+          console.error("Erro da API:", result.error);
+          showNotice("⚠️ Falha ao excluir: " + (result.error || "Erro desconhecido"));
+        }
+      } catch (err) {
+        console.error(err);
+        showNotice("⚠️ Erro de rede ao excluir. Use 'Baixar CSV' para aplicar na planilha.");
+      }
     } else {
       showNotice("🗑️ Removido. Use 'Baixar CSV' para aplicar na planilha.");
     }
