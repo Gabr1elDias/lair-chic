@@ -105,14 +105,19 @@ const Admin = (() => {
 
   function handleLogin(e) {
     e.preventDefault();
+    console.log('[Admin] handleLogin chamado', { typed: els.loginPassword.value });
+    
     const typed = els.loginPassword.value;
     const expected = (typeof CONFIG !== "undefined" && CONFIG.ADMIN_PASSWORD) ? CONFIG.ADMIN_PASSWORD : "";
+    console.log('[Admin] Expected password:', expected);
 
     if (expected && typed === expected) {
+      console.log('[Admin] Senha correta, logando...');
       sessionStorage.setItem(AUTH_KEY, "1");
       showAdmin();
       initApp();
     } else {
+      console.log('[Admin] Senha incorreta');
       els.loginError.hidden = false;
       els.loginPassword.value = "";
       els.loginPassword.focus();
