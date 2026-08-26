@@ -543,6 +543,28 @@ const App = (() => {
     renderCarousel();
     renderProducts();
     bindEvents();
+
+    // Polling automático: recarrega produtos da planilha a cada 60s
+    // para refletir alterações do admin (BEST SELLER, Novidade, volume, etc.) sem refresh manual
+    setInterval(async () => {
+      try {
+        const oldProducts = [...Products.getAll()];
+        await Products.load();
+        const newProducts = Products.getAll();
+        
+        // Verifica se houve mudanças relevantes
+        const hasChanges = JSON.stringify(oldProducts) !== JSON.stringify(newProducts);
+        
+        if (hasChanges) {
+          console.log('[LairChic] Produtos atualizados automaticamente da planilha');
+          populateBrandFilter();
+          renderCarousel();
+          renderProducts();
+        }
+      } catch (err) {
+        console.warn('[LairChic] Falha no polling automático:', err);
+      }
+    }, 60000); // 60 segundos
   }
 
   return { init };
