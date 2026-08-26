@@ -554,7 +554,7 @@ const Admin = (() => {
     }
   }
 
-  function deleteProduct(id) {
+  async function deleteProduct(id) {
     const p = products.find((x) => String(x.id) === String(id));
     if (!p) return;
     if (!confirm(`Excluir "${p.nome}"?`)) return;
