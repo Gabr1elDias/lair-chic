@@ -107,11 +107,14 @@ textarea {
   width: min(1120px, 92vw);
   margin-inline: auto;
   padding: 1rem 0;
+  gap: 1rem;
 }
 
 .header__logo {
   justify-self: center;
   align-self: center;
+  display: flex;
+  align-items: center;
 }
 
 .header__logo img {
@@ -119,11 +122,14 @@ textarea {
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 8px 18px rgba(26, 26, 26, 0.12));
+  display: block;
 }
 
 .filter-toggle {
   justify-self: start;
   align-self: center;
+  display: flex;
+  align-items: center;
 }
 
 .cart-btn {
@@ -145,6 +151,11 @@ textarea {
   cursor: pointer;
   transition: transform var(--transition), background var(--transition), color var(--transition);
   box-shadow: 0 10px 25px rgba(26, 26, 26, 0.06);
+  flex-shrink: 0;
+}
+
+.cart-btn svg {
+  display: block;
 }
 
 .cart-btn__label {
