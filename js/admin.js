@@ -171,6 +171,7 @@ const Admin = (() => {
         });
         return obj;
       });
+      console.log('[Admin] Produtos carregados da planilha:', products);
       renderTable();
     } catch (err) {
       console.error(err);
@@ -503,10 +504,11 @@ const Admin = (() => {
       estoque: parseInt($("fEstoque").value, 10) || 0,
       descricao: $("fDescricao").value.trim(),
       imagem: $("fImagem").value.trim(),
-      destaque: $("fDestaque").checked ? "sim" : "nao",
-      novidade: $("fNovidade").checked ? "sim" : "nao",
+      // Apps Script buildRow espera booleanos (true/false), não strings
+      destaque: $("fDestaque").checked,
+      novidade: $("fNovidade").checked,
       // "Desativado" é o inverso - planilha espera "ativo"
-      ativo: $("fDesativado").checked ? "nao" : "sim",
+      ativo: !$("fDesativado").checked,
     };
   }
 
@@ -518,6 +520,7 @@ const Admin = (() => {
   async function saveProduct(e) {
     e.preventDefault();
     const data = formValues();
+    console.log('[Admin] Salvando produto:', data);
 
     if (editingId) {
       data.id = editingId;
@@ -533,12 +536,15 @@ const Admin = (() => {
 
     if (CONFIG.ADMIN_API_URL) {
       try {
+        const payload = { action: editingId ? "update" : "add", product: data };
+        console.log('[Admin] Payload para API:', payload);
         const res = await fetch(CONFIG.ADMIN_API_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ action: editingId ? "update" : "add", product: data }),
+          body: JSON.stringify(payload),
         });
         const result = await res.json().catch(() => ({ ok: false, error: "Resposta inválida" }));
+        console.log('[Admin] Resposta da API:', result);
         if (result.ok) {
           showNotice("✅ Salvo na planilha. O site do cliente já está atualizado.");
         } else {
