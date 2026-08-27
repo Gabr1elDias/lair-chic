@@ -39,7 +39,8 @@ const Products = (() => {
       destaque: parseBool(row.destaque || row.Destaque),
       novidade: parseBool(row.novidade || row.Novidade),
       ativo: parseBool(row.ativo !== undefined ? row.ativo : row.Ativo !== undefined ? row.Ativo : true),
-      volume: String(row.volume || row.Volume || CONFIG.DEFAULT_VOLUME || "25ml").trim(),
+      // Se volume vier vazio da planilha (""), usa o default; se vier "100ml", usa "100ml"
+      volume: (String(row.volume || row.Volume || "").trim() || CONFIG.DEFAULT_VOLUME || "25ml"),
     };
   }
 
@@ -86,10 +87,10 @@ const Products = (() => {
   }
 
   function getAll() {
-    // Ordena: BEST SELLER (destaque) primeiro, depois NOVIDADE (novidade), depois o resto
+    // Ordena: BEST SELLER (destaque) OU NOVIDADE (novidade) primeiro (mesmo peso), depois o resto
     return [...all].sort((a, b) => {
-      const scoreA = (a.destaque ? 2 : 0) + (a.novidade ? 1 : 0);
-      const scoreB = (b.destaque ? 2 : 0) + (b.novidade ? 1 : 0);
+      const scoreA = (a.destaque || a.novidade) ? 2 : 0;
+      const scoreB = (b.destaque || b.novidade) ? 2 : 0;
       return scoreB - scoreA; // maior score primeiro
     });
   }
