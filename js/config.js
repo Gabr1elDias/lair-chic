@@ -27,7 +27,7 @@ const CONFIG = {
   // inspecionar o código no navegador consegue ver a senha. A segurança
   // de verdade será definida depois (SETUP.txt, seção 6).
   // Troque pelo valor que desejar.
-  ADMIN_PASSWORD: "lairchic2025",
+  ADMIN_PASSWORD: "LairChicPerfumes0823#",
 
   // URL do Google Apps Script (conexão do Painel Admin com a planilha).
   // Como configurar: veja admin/appsscript.js e SETUP.txt (seção 6).
