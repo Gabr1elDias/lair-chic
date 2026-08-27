@@ -297,14 +297,18 @@ function readFinance(fs) {
   return out;
 }
 
-/** Monta a linha da planilha na ordem das colunas. */
+/** Monta a linha da planilha na ordem das colunas REAIS do cabeçalho. */
 function buildRow(headers, p) {
-  const order = ["id", "nome", "marca", "genero", "linha", "familia", "volume", "preco", "estoque", "descricao", "imagem", "destaque", "novidade", "ativo"];
-  return order.map((k) => {
-    if (k === "destaque" || k === "novidade" || k === "ativo") {
-      return p[k] ? "sim" : "nao";
+  // headers = array com os nomes das colunas da planilha (ex: ["id","nome","marca",...])
+  return headers.map((k) => {
+    const key = String(k).toLowerCase().trim();
+    if (key === "destaque" || key === "novidade" || key === "ativo") {
+      // Aceita tanto boolean (true/false) quanto string ("sim"/"nao")
+      const val = p[key];
+      if (typeof val === "boolean") return val ? "sim" : "nao";
+      return String(val || "").toLowerCase() === "sim" ? "sim" : "nao";
     }
-    return p[k] !== undefined ? p[k] : "";
+    return p[key] !== undefined ? p[key] : "";
   });
 }
 
