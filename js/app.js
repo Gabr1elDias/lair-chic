@@ -63,32 +63,25 @@ const App = (() => {
   function renderCarousel() {
     carouselSlides = [
       {
-        image: "assets/Fotos%20Masculino/Brand_M_001.png",
+        image: "assets/carrosel1.png",
         badge: "Novidade",
         title: "Coleção Privée",
         subtitle: "Perfumes com presença e sofisticação",
         price: "Decants premium",
       },
       {
-        image: "assets/Fotos%20Masculino/Brand_M_005.png",
+        image: "assets/carrosel2.png",
         badge: "Destaque",
         title: "Essência em 25ml",
         subtitle: "Seleção elegante para todos os dias",
         price: "Pronta entrega",
       },
       {
-        image: "assets/carrossel1.jpg",
+        image: "assets/carrosel3.png",
         badge: "Elite",
         title: "Linha Exclusiva",
         subtitle: "Estilo e sofisticação em cada detalhe",
         price: "Edição limitada",
-      },
-      {
-        image: "assets/carrossel2.jpg",
-        badge: "Clássico",
-        title: "Presença Intemporal",
-        subtitle: "Fragrâncias que marcam a coleção",
-        price: "Disponível agora",
       },
     ];
 
@@ -96,12 +89,6 @@ const App = (() => {
       .map((slide, i) => `
         <div class="carousel__slide" data-index="${i}">
           <img src="${slide.image}" alt="${slide.title}" class="carousel__image">
-          <div class="carousel__slide-content">
-            <span class="carousel__badge">${slide.badge}</span>
-            <h2 class="carousel__title">${slide.title}</h2>
-            <p class="carousel__subtitle">${slide.subtitle}</p>
-            <p class="carousel__price">${slide.price}</p>
-          </div>
         </div>`)
       .join("");
 
